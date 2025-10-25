@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSakha - अग्रोसखा | AI-Powered Farmer Companion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login/Signup Screen -->
+    <div id="auth-screen" class="screen active">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="app-logo">🌾</div>
+                <h1 class="app-title">AgroSakha</h1>
+                <h2 class="app-title-hindi">अग्रोसखा</h2>
+                <p class="tagline" data-en="AI-Powered Farmer Companion" data-hi="किसान का डिजिटल साथी">AI-Powered Farmer Companion</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login"><span data-en="Login" data-hi="लॉगिन">Login</span></button>
+                <button class="auth-tab" data-tab="signup"><span data-en="Sign Up" data-hi="साइन अप">Sign Up</span></button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label><span data-en="Phone Number" data-hi="फोन नंबर">Phone Number</span></label>
+                    <input type="tel" id="login-phone" placeholder="10-digit number" maxlength="10" required>
+                </div>
+                <div class="form-group">
+                    <label><span data-en="Password" data-hi="पासवर्ड">Password</span></label>
+                    <input type="password" id="login-password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">
+                    <span data-en="Login" data-hi="लॉगिन करें">Login</span>
+                </button>
+                <div class="demo-credentials">
+                    <p><span data-en="Demo Login:" data-hi="डेमो लॉगिन:">Demo Login:</span></p>
+                    <p><strong>demo_farmer / harda2025</strong></p>
+                </div>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label><span data-en="Name" data-hi="नाम">Name</span></label>
+                    <input type="text" id="signup-name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label><span data-en="Phone Number" data-hi="फोन नंबर">Phone Number</span></label>
+                    <input type="tel" id="signup-phone" placeholder="10-digit number" maxlength="10" required>
+                </div>
+                <div class="form-group">
+                    <label><span data-en="Village" data-hi="गांव">Village</span></label>
+                    <select id="signup-village" required>
+                        <option value="">Select Village</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><span data-en="Farm Size (Hectares)" data-hi="खेत का आकार (हेक्टेयर)">Farm Size (Hectares)</span></label>
+                    <input type="number" id="signup-farm-size" placeholder="Optional" step="0.5" min="0">
+                </div>
+                <div class="form-group">
+                    <label><span data-en="Password" data-hi="पासवर्ड">Password</span></label>
+                    <input type="password" id="signup-password" placeholder="Create password" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">
+                    <span data-en="Create Account" data-hi="खाता बनाएं">Create Account</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Screen -->
+    <div id="app-screen" class="screen">
+        <!-- Top Bar -->
+        <header class="app-header">
+            <div class="header-left">
+                <span class="app-logo-small">🌾</span>
+                <span class="app-name">AgroSakha</span>
+            </div>
+            <div class="header-right">
+                <div class="lang-toggle">
+                    <button id="lang-toggle-btn" class="lang-btn">
+                        <span class="lang-active">EN</span> ↔️ <span class="lang-inactive">HI</span>
+                    </button>
+                </div>
+                <button class="notification-btn" id="notification-btn">
+                    🔔
+                    <span class="notification-badge" id="notification-count">4</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Demo Mode Banner -->
+        <div class="demo-banner">
+            <span>🎯 <span data-en="DEMO MODE - 15 Day Trial - All Features Enabled" data-hi="डेमो मोड - 15 दिन ट्रायल - सभी फीचर सक्रिय">DEMO MODE - 15 Day Trial - All Features Enabled</span></span>
+            <span class="trial-countdown"><span data-en="14 days remaining" data-hi="14 दिन शेष">14 days remaining</span></span>
+        </div>
+
+        <!-- Notification Panel -->
+        <div id="notification-panel" class="notification-panel">
+            <h3><span data-en="Notifications" data-hi="सूचनाएं">Notifications</span></h3>
+            <div id="notifications-list" class="notifications-list"></div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="view active">
+            <div class="welcome-section">
+                <h2><span data-en="Welcome," data-hi="स्वागत है,">Welcome,</span> <span id="user-name">Farmer</span>!</h2>
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌤️</div>
+                        <div class="stat-info">
+                            <div class="stat-value">38°C</div>
+                            <div class="stat-label" data-en="Today's Weather" data-hi="आज का मौसम">Today's Weather</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="alert-count">4</div>
+                            <div class="stat-label" data-en="Active Alerts" data-hi="सक्रिय अलर्ट">Active Alerts</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-value">₹2,180</div>
+                            <div class="stat-label" data-en="Wheat Price" data-hi="गेहूं भाव">Wheat Price</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card" data-view="weather">
+                    <div class="feature-icon">☀️</div>
+                    <h3><span data-en="Weather Alerts" data-hi="मौसम अलर्ट">Weather Alerts</span></h3>
+                    <p><span data-en="7-day forecast & alerts" data-hi="7-दिन पूर्वानुमान और अलर्ट">7-day forecast &amp; alerts</span></p>
+                </div>
+                <div class="feature-card" data-view="disease">
+                    <div class="feature-icon">🔬</div>
+                    <h3><span data-en="Crop Disease Detection" data-hi="फसल रोग पहचान">Crop Disease Detection</span></h3>
+                    <p><span data-en="AI-powered diagnosis" data-hi="AI-संचालित निदान">AI-powered diagnosis</span></p>
+                </div>
+                <div class="feature-card" data-view="market">
+                    <div class="feature-icon">📊</div>
+                    <h3><span data-en="Market Prices" data-hi="मंडी भाव">Market Prices</span></h3>
+                    <p><span data-en="Live mandi rates" data-hi="लाइव मंडी दर">Live mandi rates</span></p>
+                </div>
+                <div class="feature-card" data-view="schemes">
+                    <div class="feature-icon">🏛️</div>
+                    <h3><span data-en="Government Schemes" data-hi="सरकारी योजनाएं">Government Schemes</span></h3>
+                    <p><span data-en="Apply for subsidies" data-hi="सब्सिडी के लिए आवेदन करें">Apply for subsidies</span></p>
+                </div>
+                <div class="feature-card" data-view="community">
+                    <div class="feature-icon">👥</div>
+                    <h3><span data-en="Community" data-hi="समुदाय">Community</span></h3>
+                    <p><span data-en="Connect with farmers" data-hi="किसानों से जुड़ें">Connect with farmers</span></p>
+                </div>
+                <div class="feature-card" data-view="farm">
+                    <div class="feature-icon">🌾</div>
+                    <h3><span data-en="My Farm" data-hi="मेरा खेत">My Farm</span></h3>
+                    <p><span data-en="Manage your farm" data-hi="अपने खेत को प्रबंधित करें">Manage your farm</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather View -->
+        <div id="weather-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="Weather Alerts" data-hi="मौसम अलर्ट">Weather Alerts</span></h2>
+            </div>
+            
+            <div class="weather-current">
+                <div class="weather-main">
+                    <div class="temp-display">38°C</div>
+                    <div class="weather-condition" data-en="Partly Cloudy" data-hi="आंशिक बादल">Partly Cloudy</div>
+                    <div class="location">📍 Harda, Madhya Pradesh</div>
+                </div>
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <span class="detail-label" data-en="Humidity" data-hi="आर्द्रता">Humidity</span>
+                        <span class="detail-value">45%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label" data-en="Wind Speed" data-hi="हवा की गति">Wind Speed</span>
+                        <span class="detail-value">12 km/h</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label" data-en="UV Index" data-hi="UV सूचकांक">UV Index</span>
+                        <span class="detail-value">8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title"><span data-en="7-Day Forecast" data-hi="7-दिन का पूर्वानुमान">7-Day Forecast</span></div>
+            <div class="forecast-grid" id="forecast-grid"></div>
+
+            <div class="section-title"><span data-en="Weather Alerts" data-hi="मौसम चेतावनी">Weather Alerts</span></div>
+            <div class="alerts-list" id="weather-alerts-list"></div>
+        </div>
+
+        <!-- Disease Detection View -->
+        <div id="disease-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="Crop Disease Detection" data-hi="फसल रोग पहचान">Crop Disease Detection</span></h2>
+            </div>
+            
+            <div class="upload-container">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📷</div>
+                    <p><span data-en="Upload or take a photo of crop/leaf" data-hi="फसल/पत्ती की तस्वीर अपलोड या लें">Upload or take a photo of crop/leaf</span></p>
+                    <button class="btn btn--secondary" id="upload-btn">
+                        <span data-en="Choose Image" data-hi="छवि चुनें">Choose Image</span>
+                    </button>
+                    <input type="file" id="disease-image" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <div class="crop-selector">
+                <label><span data-en="Select Crop Type" data-hi="फसल का प्रकार चुनें">Select Crop Type</span></label>
+                <select id="crop-type">
+                    <option value="wheat"><span data-en="Wheat" data-hi="गेहूं">Wheat</span> / गेहूं</option>
+                    <option value="soybean"><span data-en="Soybean" data-hi="सोयाबीन">Soybean</span> / सोयाबीन</option>
+                    <option value="cotton"><span data-en="Cotton" data-hi="कपास">Cotton</span> / कपास</option>
+                    <option value="gram"><span data-en="Gram" data-hi="चना">Gram</span> / चना</option>
+                </select>
+            </div>
+
+            <div id="disease-result" class="disease-result" style="display: none;">
+                <div class="result-header">
+                    <span class="watermark">Powered by AgroSakha AI</span>
+                </div>
+                <div class="result-content">
+                    <div class="result-item">
+                        <span class="result-label" data-en="Disease Detected" data-hi="रोग पहचाना गया">Disease Detected</span>
+                        <h3 id="disease-name">Wheat Yellow Rust</h3>
+                        <p id="disease-name-hindi" class="hindi-text">गेहूं का पीला रतुआ</p>
+                    </div>
+                    <div class="result-metrics">
+                        <div class="metric">
+                            <span class="metric-label" data-en="Confidence" data-hi="विश्वसनीयता">Confidence</span>
+                            <span class="metric-value" id="disease-confidence">92%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label" data-en="Severity" data-hi="गंभीरता">Severity</span>
+                            <span class="metric-value severity" id="disease-severity">Moderate</span>
+                        </div>
+                    </div>
+                    <div class="treatment-section">
+                        <h4><span data-en="Treatment Recommendations" data-hi="उपचार सिफारिशें">Treatment Recommendations</span></h4>
+                        <p id="treatment-text"></p>
+                        <div class="treatment-cost">
+                            <span data-en="Estimated Cost:" data-hi="अनुमानित लागत:">Estimated Cost:</span>
+                            <strong id="treatment-cost">₹400-500/acre</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Prices View -->
+        <div id="market-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="Market Prices" data-hi="मंडी भाव">Market Prices</span></h2>
+            </div>
+            
+            <div class="market-selector">
+                <select id="mandi-select">
+                    <option value="harda">Harda / हरदा</option>
+                    <option value="khandwa">Khandwa / खंडवा</option>
+                    <option value="hoshangabad">Hoshangabad / होशंगाबाद</option>
+                </select>
+            </div>
+
+            <div class="last-updated"><span data-en="Last updated:" data-hi="अंतिम अपडेट:">Last updated:</span> 2 hours ago</div>
+
+            <div class="market-table-container">
+                <table class="market-table">
+                    <thead>
+                        <tr>
+                            <th><span data-en="Commodity" data-hi="वस्तु">Commodity</span></th>
+                            <th><span data-en="Price/Quintal" data-hi="मूल्य/क्विंटल">Price/Quintal</span></th>
+                            <th><span data-en="Change" data-hi="परिवर्तन">Change</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="market-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Government Schemes View -->
+        <div id="schemes-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="Government Schemes" data-hi="सरकारी योजनाएं">Government Schemes</span></h2>
+            </div>
+            
+            <div class="schemes-list" id="schemes-list"></div>
+        </div>
+
+        <!-- Community View -->
+        <div id="community-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="Community Forum" data-hi="समुदाय मंच">Community Forum</span></h2>
+            </div>
+            
+            <div class="community-filters">
+                <button class="filter-btn active" data-filter="all"><span data-en="Recent" data-hi="हाल का">Recent</span></button>
+                <button class="filter-btn" data-filter="popular"><span data-en="Popular" data-hi="लोकप्रिय">Popular</span></button>
+                <button class="filter-btn" data-filter="unanswered"><span data-en="Unanswered" data-hi="अनुत्तरित">Unanswered</span></button>
+            </div>
+
+            <div class="posts-list" id="posts-list"></div>
+        </div>
+
+        <!-- My Farm View -->
+        <div id="farm-view" class="view">
+            <div class="view-header">
+                <button class="back-btn" data-back="dashboard">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <h2><span data-en="My Farm" data-hi="मेरा खेत">My Farm</span></h2>
+            </div>
+            
+            <div class="farm-setup" id="farm-setup">
+                <h3><span data-en="Farm Profile Setup" data-hi="खेत प्रोफाइल सेटअप">Farm Profile Setup</span></h3>
+                <form id="farm-form">
+                    <div class="form-group">
+                        <label><span data-en="Village" data-hi="गांव">Village</span></label>
+                        <select id="farm-village" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-en="Total Area (hectares)" data-hi="कुल क्षेत्रफल (हेक्टेयर)">Total Area (hectares)</span></label>
+                        <input type="number" id="farm-area" step="0.5" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-en="Current Crops" data-hi="वर्तमान फसलें">Current Crops</span></label>
+                        <div class="crops-checkboxes">
+                            <label><input type="checkbox" value="wheat"> <span data-en="Wheat" data-hi="गेहूं">Wheat</span></label>
+                            <label><input type="checkbox" value="soybean"> <span data-en="Soybean" data-hi="सोयाबीन">Soybean</span></label>
+                            <label><input type="checkbox" value="cotton"> <span data-en="Cotton" data-hi="कपास">Cotton</span></label>
+                            <label><input type="checkbox" value="gram"> <span data-en="Gram" data-hi="चना">Gram</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-en="Irrigation" data-hi="सिंचाई">Irrigation</span></label>
+                        <select id="farm-irrigation">
+                            <option value="rainfed">Rainfed / वर्षा आधारित</option>
+                            <option value="canal">Canal / नहर</option>
+                            <option value="borewell">Borewell / बोरवेल</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-en="Soil Type" data-hi="मिट्टी का प्रकार">Soil Type</span></label>
+                        <select id="farm-soil">
+                            <option value="black">Black / काली</option>
+                            <option value="red">Red / लाल</option>
+                            <option value="alluvial">Alluvial / जलोढ़</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn--primary"><span data-en="Save Profile" data-hi="प्रोफाइल सहेजें">Save Profile</span></button>
+                </form>
+            </div>
+
+            <div id="farm-dashboard" class="farm-dashboard" style="display: none;">
+                <div class="farm-info-card">
+                    <h3 id="farm-info-title"></h3>
+                    <div class="farm-stats-grid">
+                        <div class="farm-stat">
+                            <span class="stat-label" data-en="Area" data-hi="क्षेत्रफल">Area</span>
+                            <span class="stat-value" id="farm-stat-area"></span>
+                        </div>
+                        <div class="farm-stat">
+                            <span class="stat-label" data-en="Crops" data-hi="फसलें">Crops</span>
+                            <span class="stat-value" id="farm-stat-crops"></span>
+                        </div>
+                        <div class="farm-stat">
+                            <span class="stat-label" data-en="Soil Type" data-hi="मिट्टी">Soil Type</span>
+                            <span class="stat-value" id="farm-stat-soil"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="farm-diary">
+                    <h3><span data-en="Digital Farm Diary" data-hi="डिजिटल खेत डायरी">Digital Farm Diary</span></h3>
+                    <div id="farm-activities" class="activities-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offline Mode Toggle -->
+        <div class="offline-toggle">
+            <label>
+                <input type="checkbox" id="offline-mode-toggle">
+                <span data-en="Offline Mode" data-hi="ऑफलाइन मोड">Offline Mode</span>
+            </label>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-view="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label" data-en="Home" data-hi="घर">Home</span>
+            </button>
+            <button class="nav-item" data-view="weather">
+                <span class="nav-icon">⚠️</span>
+                <span class="nav-label" data-en="Alerts" data-hi="अलर्ट">Alerts</span>
+            </button>
+            <button class="nav-item" data-view="market">
+                <span class="nav-icon">💰</span>
+                <span class="nav-label" data-en="Market" data-hi="बाजार">Market</span>
+            </button>
+            <button class="nav-item" data-view="community">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label" data-en="Community" data-hi="समुदाय">Community</span>
+            </button>
+            <button class="nav-item" id="profile-nav">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label" data-en="Profile" data-hi="प्रोफ़ाइल">Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p id="loading-text"><span data-en="Analyzing image..." data-hi="छवि का विश्लेषण...">Analyzing image...</span></p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
